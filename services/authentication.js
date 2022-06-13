@@ -1,7 +1,10 @@
-const User = require('../models/user')
+const User = require('../models/user');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
     async register (req, res) {
+        console.log(req.body.username)
 
         const duplicate = await User.findOne({
             $or: [
@@ -13,9 +16,7 @@ module.exports = {
             res.status(403).send({
                 message: 'User already exists'
             })
-        }
-
-        if(!duplicate) {
+        } else {
             const salt = await bcrypt.genSalt(10)
             const hashedPW = await bcrypt.hash(req.body.password, salt)
 
@@ -32,6 +33,7 @@ module.exports = {
         }
     },
     async login(req, res) {
+        console.log(req.body.email)
         const user = await User.findOne({email: req.body.email})
 
         if(!user) {
@@ -40,12 +42,25 @@ module.exports = {
             })
         }
 
+
         if (!await bcrypt.compare(req.body.password, user.password)){
             return res.status(400).send({
                 message: 'invalid credentials'
             })
         }
 
-        
+        const token = jwt.sign({_id: user._id}, process.env.USER_SECRET_TOKEN)
+        res.cookie('jwt', token, {
+            httpOnly: true,
+            maxAge: 24 * 60 * 60 * 1000 //1 Day
+        })
+
+        res.status(200).send({message: "Success " + req.body.email})
+    },
+    async logout(res, req) {
+        res.cookie('jwt', '', {maxAge: 0})
+        res.send({
+            message: "Success"
+        })
     }
 }
