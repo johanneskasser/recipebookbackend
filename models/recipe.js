@@ -20,7 +20,7 @@ const recipeSchema = new mongoose.Schema({
         type: String,
     }],
     ingredients: [{
-        type: ingredient, //TODO: Add Ingredients Object
+        type: String, //TODO: Add Ingredients Object
     }]
 
 }, {timestamps: true})
