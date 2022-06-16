@@ -55,7 +55,7 @@ module.exports = {
 
         res.status(200).send(user)
     },
-    async logout(res, req) {
+    async logout(req, res) {
         res.cookie('jwt', '', {maxAge: 0})
         res.send({
             message: "Success"
