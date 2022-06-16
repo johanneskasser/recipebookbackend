@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
     async register (req, res) {
-        console.log(req.body.username)
 
         const duplicate = await User.findOne({
             $or: [
@@ -33,7 +32,6 @@ module.exports = {
         }
     },
     async login(req, res) {
-        console.log(req.body.email)
         const user = await User.findOne({email: req.body.email})
 
         if(!user) {
@@ -55,7 +53,7 @@ module.exports = {
             maxAge: 24 * 60 * 60 * 1000 //1 Day
         })
 
-        res.status(200).send({message: "Success " + req.body.email})
+        res.status(200).send(user)
     },
     async logout(res, req) {
         res.cookie('jwt', '', {maxAge: 0})
