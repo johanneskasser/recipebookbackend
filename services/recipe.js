@@ -1,4 +1,6 @@
 const Recipe = require("../models/recipe")
+const path = require("path");
+const fs = require("fs");
 
 module.exports = {
     async createRecipe(req, res) {
@@ -59,6 +61,22 @@ module.exports = {
         } catch(e) {
             res.status(404).send("Recipe could not be deleted!")
         }
+    },
+    async uploadImg(req, res) {
+        if(req.file) {
+            const pathName = process.env.BASE_URL + req.file.path
+            res.status(200).send(pathName)
+        }
+    },
 
+    async getImage(req, res) {
+        const imageName = req.query.imagePath;
+        const absolutePath = path.join(__dirname, "/../images/" + imageName)
+        if(imageName && fs.existsSync(absolutePath)) {
+            res.status(200).sendFile(absolutePath)
+        } else {
+            res.status(404).send("File not Found")
+        }
     }
+
 }
