@@ -4,6 +4,7 @@ const fs = require("fs");
 
 module.exports = {
     async createRecipe(req, res) {
+        const _id = req.body._id
         const title = req.body.title
         const description = req.body.description
         const time = req.body.duration
@@ -12,18 +13,14 @@ module.exports = {
         const ingredients = req.body.ingredients
 
         const duplicate = await Recipe.findOne({
-            $and: [
-                {title: title},
-                {description: description}
-            ]
+            _id: _id
         })
 
         if(duplicate) {
             await Recipe.updateOne(
-                {$and: [
-                        {title: title},
-                        {description: description}
-                    ]},
+                {
+                    _id: _id
+                },
                 {
                     $set: {time: time, author: author, images: images, ingredients: ingredients},
                 },
@@ -62,6 +59,9 @@ module.exports = {
             res.status(404).send("Recipe could not be deleted!")
         }
     },
+
+
+    /*
     async uploadImg(req, res) {
         if(req.file) {
             const pathName = process.env.BASE_URL + req.file.path
@@ -77,6 +77,6 @@ module.exports = {
         } else {
             res.status(404).send("File not Found")
         }
-    }
+    }*/
 
 }
