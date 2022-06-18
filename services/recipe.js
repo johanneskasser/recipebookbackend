@@ -50,8 +50,6 @@ module.exports = {
         const images = req.body.images
         const ingredients = req.body.ingredients
 
-        console.log("ID Of Recipe" + _id)
-
         const recipe = Recipe.findOne({_id: _id})
         if (recipe) {
             const newRecipe = Recipe.updateOne(
@@ -67,7 +65,7 @@ module.exports = {
                     }
                 }
             )
-            res.status(200).send(newRecipe)
+            res.status(200).send("Success")
         } else {
             res.status(404).send("Recipe not found")
         }
