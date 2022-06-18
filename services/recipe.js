@@ -16,7 +16,7 @@ module.exports = {
             _id: _id
         })
 
-        if(duplicate) {
+        if (duplicate) {
             await Recipe.updateOne(
                 {
                     _id: _id
@@ -27,7 +27,7 @@ module.exports = {
                 {new: true}
             )
             res.status(200).send("Recipe Updated")
-        } else if(!duplicate) {
+        } else if (!duplicate) {
             const recipe = new Recipe({
                 title: title,
                 description: description,
@@ -41,6 +41,36 @@ module.exports = {
             res.status(200).send(result)
         }
     },
+    async editRecipe(req, res) {
+        const _id = req.body._id
+        const title = req.body.title
+        const description = req.body.description
+        const time = req.body.time
+        const author = req.body.author
+        const images = req.body.images
+        const ingredients = req.body.ingredients
+
+        const recipe = Recipe.findOne({_id: _id})
+        if (recipe) {
+            const newRecipe = Recipe.updateOne(
+                {_id: _id},
+                {
+                    $set: {
+                        title: title,
+                        description: description,
+                        time: time,
+                        author: author,
+                        images: images,
+                        ingredients: ingredients
+                    }
+                }
+            )
+            res.status(200).send(newRecipe)
+        } else {
+            res.status(404).send("Recipe not found")
+        }
+    },
+
     async getRecipe(req, res) {
         const user = req.query.userID;
         let recipes = await Recipe.find({author: user})
@@ -50,12 +80,12 @@ module.exports = {
             res.status(404).send("No Recipes found")
         }
     },
-    async deleteRecipe(req,res) {
+    async deleteRecipe(req, res) {
         const rec_id = req.query._id
         try {
             await Recipe.deleteOne({_id: rec_id})
             res.status(200).send("Recipe successfully deleted")
-        } catch(e) {
+        } catch (e) {
             res.status(404).send("Recipe could not be deleted!")
         }
     },

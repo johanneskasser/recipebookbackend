@@ -22,6 +22,8 @@ router.get("/getRecipe", recipe.getRecipe)
 
 router.get("/deleteRecipe", recipe.deleteRecipe)
 
+router.post('/editRecipe', recipe.editRecipe)
+
 //router.post("/uploadImg", upload.single('image') ,recipe.uploadImg)
 
 //router.get("/images", recipe.getImage)
