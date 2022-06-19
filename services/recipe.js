@@ -52,7 +52,7 @@ module.exports = {
 
         const recipe = Recipe.findOne({_id: _id})
         if (recipe) {
-            const newRecipe = Recipe.updateOne(
+            await Recipe.updateOne(
                 {_id: _id},
                 {
                     $set: {
