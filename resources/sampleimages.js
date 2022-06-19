@@ -1,9 +1,12 @@
-function getRandomImage() {
-    const min = 0
-    const max = 10
-    const random = Math.round((Math.random() * (max - min)) + min)
-    //console.log(random, getImageList())
-    return getImageList()[random]
+module.exports = {
+    get getRandomImage() {
+        const min = 0
+        const max = 10
+        var random =  Math.floor(Math.random() * (max - min + 1)) + min
+        //console.log(random)
+
+        return getImageList()[random]
+    }
 }
 
 function getImageList() {
@@ -22,4 +25,3 @@ function getImageList() {
     ]
 }
 
-module.exports = getRandomImage()

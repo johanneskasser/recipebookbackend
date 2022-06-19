@@ -1,7 +1,7 @@
 const Recipe = require("../models/recipe")
 const path = require("path");
 const fs = require("fs");
-const getRandomImage = require("../resources/sampleimages")
+const g = require("../resources/sampleimages")
 
 module.exports = {
     async createRecipe(req, res) {
@@ -30,9 +30,7 @@ module.exports = {
             res.status(200).send("Recipe Updated")
         } else if (!duplicate) {
             if(images.length === 0) {
-                const link = getRandomImage
-                console.log("Here" + link)
-                images = link
+                images = g.getRandomImage
             }
             const recipe = new Recipe({
                 title: title,
