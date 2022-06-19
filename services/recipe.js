@@ -1,6 +1,7 @@
 const Recipe = require("../models/recipe")
 const path = require("path");
 const fs = require("fs");
+const getRandomImage = require("../resources/sampleimages")
 
 module.exports = {
     async createRecipe(req, res) {
@@ -9,7 +10,7 @@ module.exports = {
         const description = req.body.description
         const time = req.body.time
         const author = req.body.author
-        const images = req.body.images
+        let images = req.body.images
         const ingredients = req.body.ingredients
 
         const duplicate = await Recipe.findOne({
@@ -28,6 +29,11 @@ module.exports = {
             )
             res.status(200).send("Recipe Updated")
         } else if (!duplicate) {
+            if(images.length === 0) {
+                const link = getRandomImage
+                console.log("Here" + link)
+                images = link
+            }
             const recipe = new Recipe({
                 title: title,
                 description: description,
