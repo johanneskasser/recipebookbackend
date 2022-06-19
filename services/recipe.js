@@ -50,6 +50,8 @@ module.exports = {
         const images = req.body.images
         const ingredients = req.body.ingredients
 
+        console.log(_id, title, description, time, author, images, ingredients)
+
         const recipe = Recipe.findOne({_id: _id})
         if (recipe) {
             await Recipe.updateOne(
