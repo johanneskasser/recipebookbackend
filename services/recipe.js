@@ -51,10 +51,14 @@ module.exports = {
         const description = req.body.description
         const time = req.body.time
         const author = req.body.author
-        const images = req.body.images
+        let images = req.body.images
         const ingredients = req.body.ingredients
 
         //console.log(_id, title, description, time, author, images, ingredients)
+
+        if(images.length === 0) {
+            images = g.getRandomImage
+        }
 
         const recipe = Recipe.findOne({_id: _id})
         if (recipe) {
